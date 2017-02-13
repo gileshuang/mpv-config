@@ -16,7 +16,3 @@ This is taken from <https://github.com/GoNZooo/mpv-scripts>, and modified the po
 
 This script will automatically save and load playlist positions. It displays your current position in the playlist. Note that this does not save playlist positions based on individual playlists, but uses the same filename for all playlists.
 
-## pause-when-minimize.lua
-
-Got from <https://github.com/mpv-player/mpv/blob/master/TOOLS/lua/pause-when-minimize.lua>.
-
