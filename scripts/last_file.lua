@@ -12,6 +12,7 @@
 --
 --end
 
+--[[
 function read_pos(filename)
     local pos_file = io.open(filename, "r")
     local stored_pos = -1
@@ -51,3 +52,5 @@ end
 mp.register_event("file-loaded", on_file_loaded)
 mp.register_event("shutdown", write_playlist_pos)
 mp.register_event("end-file", write_playlist_pos)
+]]--
+
