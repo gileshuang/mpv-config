@@ -35,7 +35,7 @@ end
 function check_did_pause_change()
 	if stat.did_pause == "true" then
 		mp.set_property_native("pause", true)
-		stat.pause_on_start = "false"
+		stat.did_pause = "false"
 	end
 end
 
