@@ -13,7 +13,6 @@ local stat = {
 }
 
 function load_last_stat()
-	mp.osd_message("DEBUG: load_last_stat")
 	local jsonfile = history.json_file
 	local input_file = io.open(jsonfile, "r")
 	local json_history = input_file:read()
@@ -28,10 +27,7 @@ function load_last_stat()
 	output_file:write(history.last_file)
 	output_file:close()
 
-	--mp.osd_message("DEBUG: " .. mp.get_property("playlist"))
 	mp.commandv("loadfile", history.last_file, "append-play", "start=" .. history.last_fpos)
-	--mp.commandv("loadfile", history.last_file, "append-play")
-	--mp.commandv("seek", history.last_fpos, "absolute")
 	stat.did_pause = "true"
 end
 
