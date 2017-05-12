@@ -2,10 +2,14 @@
 
 mputils = require 'mp.utils'
 
-history = {
+local history = {
 	json_file = ".config/gnome-mpv/play_history.json",
 	last_file = "",
 	last_fpos = "",
+}
+
+local stat = {
+	didpause = "",
 }
 
 function load_last_stat()
@@ -28,10 +32,18 @@ function load_last_stat()
 	mp.commandv("loadfile", history.last_file, "append-play", "start=" .. history.last_fpos)
 	--mp.commandv("loadfile", history.last_file, "append-play")
 	--mp.commandv("seek", history.last_fpos, "absolute")
+	stat.did_pause = "true"
+end
+
+-- [[ use this event function to workaround gnome-mpv's pause issue. ]]--
+function check_did_pause_change()
+	if stat.did_pause == "true" then
+		mp.set_property_native("pause", true)
+		stat.pause_on_start = "false"
+	end
 end
 
 function get_history()
-	mp.osd_message("DEBUG: get_history")
 	local pl_count = mp.get_property_number("playlist/count")
 
 	if pl_count == 0 then
@@ -40,7 +52,6 @@ function get_history()
 end
 
 function auto_save_playing()
-	mp.osd_message("DEBUG:")
 	local last_file = mp.get_property("path")
 	local last_fpos = mp.get_property("time-pos")
 	if last_file ~= nil then
@@ -56,10 +67,9 @@ function auto_save_playing()
 	output_file:close()
 end
 
---get_history()
+timer = mp.add_timeout(1, get_history)
 
---mp.register_event("", get_history)
-timer = mp.add_timeout(2, get_history)
 mp.register_event("seek", auto_save_playing)
 mp.add_hook("on_unload", 0, auto_save_playing)
+mp.register_event("file-loaded", check_did_pause_change)
 
